@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fibonacci a la natura — Qüestionari d'avaluació</title>
+    <!-- Càrrega de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tipografia Inter i Fredoka per a un toc amigable i clar -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Fredoka', 'sans-serif'],
+                    },
+                    colors: {
+                        crema: '#FDFBF7',
+                        bosc: {
+                            50: '#F2F7F4',
+                            100: '#E0ECE4',
+                            200: '#C2D9CB',
+                            500: '#3B7A57',
+                            600: '#2E6245',
+                            700: '#234B35',
+                            800: '#1A3828',
+                        },
+                        mel: {
+                            50: '#FFFBEB',
+                            100: '#FEF3C7',
+                            200: '#FDE68A',
+                            400: '#FBBF24',
+                            500: '#F59E0B',
+                            600: '#D97706',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Fons subtil inspirat en rusc i natura */
+        body {
+            background-color: #FDFBF7;
+            background-image: radial-gradient(#C2D9CB 0.85px, transparent 0.85px), radial-gradient(#FDE68A 0.85px, #FDFBF7 0.85px);
+            background-size: 34px 34px;
+            background-position: 0 0, 17px 17px;
+        }
+        .fade-in {
+            animation: fadeIn 0.35s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .option-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .option-btn:not(:disabled):hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col justify-between antialiased selection:bg-mel-200 selection:text-bosc-800">
+
+    <!-- Capçalera superior compacta -->
+    <header class="w-full bg-white/90 backdrop-blur-md border-b border-bosc-200/70 sticky top-0 z-20">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <!-- Icona Espiral SVG -->
+                <div class="w-9 h-9 rounded-xl bg-bosc-500 text-white flex items-center justify-center shadow-sm">
+                    <svg class="w-6 h-6" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <path d="M16 16c0-1.1.9-2 2-2s2 .9 2 2c0 2.2-1.8 4-4 4-3.3 0-6-2.7-6-6 0-4.4 3.6-8 8-8 5.5 0 10 4.5 10 10 0 6.6-5.4 12-12 12-7.7 0-14-6.3-14-14"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="font-display font-bold text-bosc-800 text-base sm:text-lg leading-tight">Fibonacci a la natura</h1>
+                    <p class="text-xs text-bosc-600 font-medium hidden sm:block">Cicle Superior de Primària · Matemàtiques i Natura</p>
+                </div>
+            </div>
+            <div id="header-badge" class="hidden items-center gap-2 bg-mel-100 text-mel-600 px-3 py-1 rounded-full text-xs sm:text-sm font-semibold border border-mel-200">
+                <span>Punts:</span>
+                <span id="header-score" class="font-bold text-bosc-800">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenidor Principal -->
+    <main class="flex-grow flex items-center justify-center px-4 py-6 sm:py-10">
+        <div class="w-full max-w-3xl">
+
+            <!-- 1. PANTALLA D'INICI -->
+            <section id="screen-start" class="bg-white rounded-3xl shadow-xl shadow-bosc-800/5 border border-bosc-100 overflow-hidden fade-in">
+                <!-- Franja decorativa superior -->
+                <div class="bg-gradient-to-r from-bosc-600 via-bosc-500 to-bosc-600 p-6 sm:p-8 text-white relative overflow-hidden">
+                    <!-- Decoració geomètrica de fons -->
+                    <svg class="absolute -right-6 -bottom-10 w-48 h-48 text-white/10 pointer-events-none" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3">
+                        <rect x="10" y="10" width="80" height="80" />
+                        <rect x="10" y="10" width="50" height="50" />
+                        <rect x="60" y="10" width="30" height="30" />
+                        <path d="M10 90 A 80 80 0 0 1 90 10" stroke-width="4" />
+                    </svg>
+
+                    <div class="inline-flex items-center gap-1.5 bg-mel-400 text-bosc-800 font-bold text-xs uppercase tracking-wider px-3 py-1 rounded-full mb-3 shadow-sm">
+                        <span>🌻</span> Repte d'avaluació · 5è i 6è
+                    </div>
+                    <h2 class="font-display text-2xl sm:text-4xl font-bold leading-tight mb-2">
+                        Fibonacci a la natura — Qüestionari d'avaluació
+                    </h2>
+                    <p class="text-bosc-50 text-sm sm:text-base max-w-xl leading-relaxed">
+                        Demostra tot el que has descobert investigant les successions numèriques, els gira-sols, les pinyes, l'angle d'or i els camins de les abelles al rusc!
+                    </p>
+                </div>
+
+                <div class="p-6 sm:p-8 space-y-6">
+                    <!-- Targetes informatives dels 4 blocs -->
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Què trobaràs en aquestes 20 preguntes?</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div class="flex items-start gap-3 p-3.5 rounded-2xl bg-bosc-50/70 border border-bosc-100">
+                                <span class="text-xl">🔢</span>
+                                <div>
+                                    <p class="font-semibold text-sm text-bosc-800">Bloc 1: Successions</p>
+                                    <p class="text-xs text-slate-600">Qui era Fibonacci i piràmides numèriques.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3.5 rounded-2xl bg-mel-50/70 border border-mel-200/70">
+                                <span class="text-xl">✨</span>
+                                <div>
+                                    <p class="font-semibold text-sm text-bosc-800">Bloc 2: Regularitats</p>
+                                    <p class="text-xs text-slate-600">Sumes màgiques, múltiples i esglaons.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3.5 rounded-2xl bg-mel-50/70 border border-mel-200/70">
+                                <span class="text-xl">🐚</span>
+                                <div>
+                                    <p class="font-semibold text-sm text-bosc-800">Bloc 3: Geometria i natura</p>
+                                    <p class="text-xs text-slate-600">L'espiral, les plantes i l'angle d'or.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3.5 rounded-2xl bg-bosc-50/70 border border-bosc-100">
+                                <span class="text-xl">🐝</span>
+                                <div>
+                                    <p class="font-semibold text-sm text-bosc-800">Bloc 4: Abelles i robots</p>
+                                    <p class="text-xs text-slate-600">Camins pel rusc i programació.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Camp opcional del nom -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200/80">
+                        <label for="student-name" class="block text-sm font-semibold text-slate-700 mb-1.5">
+                            El teu nom o inicials <span class="text-slate-400 font-normal">(opcional)</span>
+                        </label>
+                        <input type="text" id="student-name" placeholder="Escriu el teu nom aquí..." maxlength="40"
+                            class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-bosc-500 focus:border-bosc-500 transition text-base">
+                    </div>
+
+                    <!-- Botó d'inici -->
+                    <button id="btn-start" type="button"
+                        class="w-full py-4 px-6 rounded-2xl bg-mel-400 hover:bg-mel-500 active:scale-[0.99] text-bosc-800 font-display font-bold text-lg sm:text-xl shadow-lg shadow-mel-500/25 transition flex items-center justify-center gap-2 cursor-pointer">
+                        <span>Comença el repte!</span>
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 2. PANTALLA DEL QÜESTIONARI -->
+            <section id="screen-quiz" class="hidden space-y-4 fade-in">
+                <!-- Barra de progrés i informació del bloc -->
+                <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-bosc-100">
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+                        <span id="quiz-block-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-bosc-100 text-bosc-700">
+                            Bloc 1: Qui era Fibonacci i les successions numèriques
+                        </span>
+                        <span id="quiz-progress-text" class="text-sm font-bold text-slate-600">
+                            Pregunta 1 de 20
+                        </span>
+                    </div>
+                    <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/60">
+                        <div id="quiz-progress-bar" class="h-full bg-gradient-to-r from-bosc-500 to-mel-400 rounded-full transition-all duration-500 ease-out" style="width: 5%"></div>
+                    </div>
+                </div>
+
+                <!-- Targeta de la pregunta -->
+                <div class="bg-white rounded-3xl shadow-xl shadow-bosc-800/5 border border-bosc-100 p-6 sm:p-8">
+                    <!-- Enunciat -->
+                    <div class="flex items-start gap-3 mb-5">
+                        <span id="question-number-pill" class="flex-shrink-0 w-9 h-9 rounded-xl bg-mel-400 text-bosc-800 font-display font-bold flex items-center justify-center text-base shadow-sm">
+                            1
+                        </span>
+                        <h2 id="question-text" class="text-lg sm:text-xl font-bold text-slate-800 leading-snug pt-0.5">
+                            Text de la pregunta...
+                        </h2>
+                    </div>
+
+                    <!-- Contenidor d'il·lustració SVG dinàmica (només visible quan toca) -->
+                    <div id="question-visual" class="hidden mb-6 bg-crema rounded-2xl border border-bosc-200/70 p-4 flex flex-col items-center justify-center">
+                        <!-- L'SVG s'injecta des de JavaScript -->
+                    </div>
+
+                    <!-- Opcions de resposta -->
+                    <div id="options-container" class="space-y-3">
+                        <!-- Els botons s'injecten des de JavaScript -->
+                    </div>
+
+                    <!-- Caixa de retroacció immediata -->
+                    <div id="feedback-box" class="hidden mt-6 p-4 sm:p-5 rounded-2xl border-2 fade-in">
+                        <div class="flex items-start gap-3">
+                            <div id="feedback-icon" class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold">
+                            </div>
+                            <div class="space-y-1">
+                                <p id="feedback-title" class="font-display font-bold text-base sm:text-lg"></p>
+                                <p id="feedback-explanation" class="text-sm sm:text-base leading-relaxed"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botó Següent -->
+                    <div id="next-container" class="hidden mt-6 pt-4 border-t border-slate-100 flex justify-end">
+                        <button id="btn-next" type="button"
+                            class="w-full sm:w-auto py-3.5 px-7 rounded-2xl bg-bosc-600 hover:bg-bosc-700 active:scale-[0.99] text-white font-display font-bold text-base sm:text-lg shadow-md shadow-bosc-600/20 transition flex items-center justify-center gap-2 cursor-pointer">
+                            <span id="btn-next-label">Següent pregunta</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. PANTALLA FINAL DE RESULTATS -->
+            <section id="screen-results" class="hidden space-y-6 fade-in">
+                <div class="bg-white rounded-3xl shadow-xl shadow-bosc-800/5 border border-bosc-100 overflow-hidden">
+                    <!-- Capçalera resultats -->
+                    <div class="bg-gradient-to-br from-bosc-700 via-bosc-600 to-bosc-500 p-6 sm:p-8 text-white text-center relative">
+                        <div id="result-trophy" class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-mel-400 text-bosc-800 flex items-center justify-center text-3xl shadow-lg">
+                            🏆
+                        </div>
+                        <h2 id="result-greeting" class="font-display text-2xl sm:text-3xl font-bold mb-1">
+                            Has completat el repte!
+                        </h2>
+                        <p id="result-subtitle" class="text-bosc-100 text-sm sm:text-base">
+                            Aquí tens el resum de la teva avaluació sobre Fibonacci a la natura.
+                        </p>
+
+                        <!-- Marcador gran -->
+                        <div class="mt-6 inline-flex items-center gap-6 bg-white/15 backdrop-blur-sm border border-white/20 rounded-2xl px-6 py-4">
+                            <div class="text-center">
+                                <span class="block text-xs uppercase tracking-wider text-bosc-100 font-semibold">Puntuació</span>
+                                <span id="result-score" class="font-display text-3xl sm:text-4xl font-bold text-mel-200">0 / 20</span>
+                            </div>
+                            <div class="h-10 w-px bg-white/25"></div>
+                            <div class="text-center">
+                                <span class="block text-xs uppercase tracking-wider text-bosc-100 font-semibold">Percentatge</span>
+                                <span id="result-percentage" class="font-display text-3xl sm:text-4xl font-bold text-white">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-6 sm:p-8 space-y-6">
+                        <!-- Missatge motivador -->
+                        <div id="result-message-box" class="p-4 sm:p-5 rounded-2xl bg-mel-50 border border-mel-200 text-bosc-800 text-center">
+                            <p id="result-message" class="font-medium text-sm sm:text-base leading-relaxed"></p>
+                        </div>
+
+                        <!-- Desglossament per blocs -->
+                        <div>
+                            <h3 class="font-display font-bold text-lg text-bosc-800 mb-3 flex items-center gap-2">
+                                <span>📊</span> Rendiment per blocs temàtics
+                            </h3>
+                            <div id="blocks-summary" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                <!-- Targetes de cada bloc generades per JS -->
+                            </div>
+                        </div>
+
+                        <!-- Botons d'acció -->
+                        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                            <button id="btn-toggle-review" type="button"
+                                class="flex-1 py-3.5 px-5 rounded-2xl bg-bosc-50 hover:bg-bosc-100 text-bosc-700 border border-bosc-200 font-display font-bold text-base transition flex items-center justify-center gap-2 cursor-pointer">
+                                <span>🔍</span>
+                                <span id="btn-review-text">Revisa totes les respostes</span>
+                            </button>
+                            <button id="btn-restart" type="button"
+                                class="flex-1 py-3.5 px-5 rounded-2xl bg-mel-400 hover:bg-mel-500 text-bosc-800 font-display font-bold text-base shadow-md shadow-mel-500/20 transition flex items-center justify-center gap-2 cursor-pointer">
+                                <span>🔄</span>
+                                <span>Torna a fer el qüestionari</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secció desplegable de revisió de les 20 preguntes -->
+                <div id="review-section" class="hidden space-y-4 fade-in">
+                    <div class="flex items-center justify-between px-1">
+                        <h3 class="font-display font-bold text-xl text-bosc-800">Revisió detallada de les 20 preguntes</h3>
+                        <span class="text-xs font-semibold text-slate-500">Verd = Correcta · Vermell = La teva tria</span>
+                    </div>
+                    <div id="review-list" class="space-y-4">
+                        <!-- Llista generada per JS -->
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Peu de pàgina -->
+    <footer class="w-full py-4 px-4 text-center text-xs text-slate-500">
+        Proposta didàctica: <strong class="text-bosc-700">Fibonacci a la natura</strong> · Cicle Superior de Primària
+    </footer>
+
+    <script>
+        // Dades completes de les 20 preguntes organitzades pels 4 blocs
+        const QUESTIONS = [
+            // BLOC 1
+            {
+                id: 1,
+                block: "Bloc 1: Qui era Fibonacci i les successions numèriques",
+                shortBlock: "Bloc 1: Successions",
+                question: "Qui era Fibonacci?",
+                options: [
+                    "Un botànic grec que estudiava les plantes i les flors.",
+                    "Un matemàtic italià de l'Edat Mitjana anomenat Leonardo de Pisa.",
+                    "Un inventor francès que va crear el primer robot."
+                ],
+                correct: 1,
+                explanation: "Exacte! Leonardo de Pisa, conegut com a Fibonacci, va ser un matemàtic italià de l'Edat Mitjana que va popularitzar aquesta famosa successió.",
+                visual: null
+            },
+            {
+                id: 2,
+                block: "Bloc 1: Qui era Fibonacci i les successions numèriques",
+                shortBlock: "Bloc 1: Successions",
+                question: "Com s'obté cada nombre nou a les piràmides numèriques i a la successió de Fibonacci?",
+                options: [
+                    "Multiplicant per dos el nombre anterior.",
+                    "Sumant els dos nombres anteriors.",
+                    "Sumant sempre 3 al nombre anterior."
+                ],
+                correct: 1,
+                explanation: "Molt bé! Tant a les piràmides numèriques com a la successió de Fibonacci, cada nombre s'obté sumant els dos anteriors.",
+                visual: null
+            },
+            {
+                id: 3,
+                block: "Bloc 1: Qui era Fibonacci i les successions numèriques",
+                shortBlock: "Bloc 1: Successions",
+                question: "Quins són els tres nombres que falten per continuar la successió de Fibonacci: 1, 1, 2, 3, 5, 8, 13, ___, ___, ___?",
+                options: [
+                    "20, 33, 53",
+                    "21, 34, 55",
+                    "18, 25, 38"
+                ],
+                correct: 1,
+                explanation: "8 + 13 = 21; 13 + 21 = 34; i 21 + 34 = 55. Segueix la regla de sumar els dos anteriors!",
+                visual: null
+            },
+            {
+                id: 4,
+                block: "Bloc 1: Qui era Fibonacci i les successions numèriques",
+                shortBlock: "Bloc 1: Successions",
+                question: "Si comencem una successió amb els nombres 2 i 5 seguint la mateixa regla de Fibonacci (2, 5, 7, 12...), quin serà el següent nombre?",
+                options: [
+                    "17",
+                    "19",
+                    "24"
+                ],
+                correct: 1,
+                explanation: "Com que 7 + 12 = 19, el següent nombre de la línia és 19.",
+                visual: null
+            },
+            {
+                id: 5,
+                block: "Bloc 1: Qui era Fibonacci i les successions numèriques",
+                shortBlock: "Bloc 1: Successions",
+                question: "A la base d'una piràmide numèrica de 4 pisos hi col·loquem els nombres 1,25, 2,5, 3 i 4. On hem de posar els nombres més grans per aconseguir que el resultat de dalt de tot sigui el màxim possible?",
+                options: [
+                    "Als extrems de la base.",
+                    "Al centre de la base (perquè se sumen més vegades).",
+                    "L'ordre no importa, sempre dona el mateix resultat al cim."
+                ],
+                correct: 1,
+                explanation: "Les caselles centrals de la base intervenen en més sumes a mesura que pugem pisos, per això hi posem els nombres més grans (3 i 4) per maximitzar el cim.",
+                visual: "pyramid"
+            },
+
+            // BLOC 2
+            {
+                id: 6,
+                block: "Bloc 2: Regularitats i prediccions",
+                shortBlock: "Bloc 2: Regularitats",
+                question: "Si sumem els primers nombres de Fibonacci (1 + 1 + 2 + 3 + 5 = 12), quina relació té aquest resultat (12) amb la successió?",
+                options: [
+                    "És exactament el nombre que va dos llocs més enllà (13) menys 1.",
+                    "Sempre és un nombre parell.",
+                    "És el doble de l'últim nombre que hem sumat."
+                ],
+                correct: 0,
+                explanation: "Aquesta és una regularitat màgica de Fibonacci: la suma dels primers nombres sempre dona el nombre situat dues posicions més enllà restant-li 1 (13 - 1 = 12).",
+                visual: null
+            },
+            {
+                id: 7,
+                block: "Bloc 2: Regularitats i prediccions",
+                shortBlock: "Bloc 2: Regularitats",
+                question: "Sense fer tota la suma a mà, quin és el resultat de 1 + 1 + 2 + 3 + 5 + 8 + 13 sabent que després del 13 ve el 21 i després el 34?",
+                options: [
+                    "33 (perquè 34 - 1 = 33)",
+                    "20 (perquè 21 - 1 = 20)",
+                    "35 (perquè 34 + 1 = 35)"
+                ],
+                correct: 0,
+                explanation: "Aplicant la regularitat descoberta, mirem dos llocs més enllà del 13 (que és el 34) i hi restem 1: 34 - 1 = 33.",
+                visual: null
+            },
+            {
+                id: 8,
+                block: "Bloc 2: Regularitats i prediccions",
+                shortBlock: "Bloc 2: Regularitats",
+                question: "Observa la successió: 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144... Cada quants nombres apareix un múltiple de 2 (nombre parell)?",
+                options: [
+                    "Cada 2 posicions.",
+                    "Cada 3 posicions.",
+                    "Apareixen a l'atzar, sense cap patró."
+                ],
+                correct: 1,
+                explanation: "Si t'hi fixes: imparell, imparell, PARELL (2), imparell, imparell, PARELL (8)... Apareix un múltiple de 2 cada 3 posicions!",
+                visual: null
+            },
+            {
+                id: 9,
+                block: "Bloc 2: Regularitats i prediccions",
+                shortBlock: "Bloc 2: Regularitats",
+                question: "De quina manera podem pujar una escala de 4 esglaons fent passes d'1 o de 2 esglaons (tenint en compte que l'ordre importa)?",
+                options: [
+                    "De 4 maneres diferents.",
+                    "De 5 maneres diferents (1+1+1+1, 1+1+2, 1+2+1, 2+1+1, 2+2).",
+                    "De 3 maneres diferents."
+                ],
+                correct: 1,
+                explanation: "Per a 1 esglaó hi ha 1 manera; per a 2 esglaons, 2 maneres; per a 3 esglaons, 3 maneres; i per a 4 esglaons, 5 maneres (1, 2, 3, 5... torna a aparèixer Fibonacci!).",
+                visual: null
+            },
+
+            // BLOC 3
+            {
+                id: 10,
+                block: "Bloc 3: De la geometria a la natura",
+                shortBlock: "Bloc 3: Geometria i natura",
+                question: "Per què quan ajuntem quadrats amb les mides de Fibonacci (1, 1, 2, 3, 5, 8...) encaixen perfectament sense deixar espais buits?",
+                options: [
+                    "Perquè tots els quadrats tenen la mateixa àrea.",
+                    "Perquè el costat del quadrat nou és exactament igual a la suma dels costats dels dos quadrats anteriors que té al costat.",
+                    "Perquè es dibuixen amb un compàs especial."
+                ],
+                correct: 1,
+                explanation: "Com que cada nombre de Fibonacci és la suma dels dos anteriors, el costat de cada quadrat nou coincideix exactament amb la longitud dels dos quadrats que té al costat.",
+                visual: "spiral"
+            },
+            {
+                id: 11,
+                block: "Bloc 3: De la geometria a la natura",
+                shortBlock: "Bloc 3: Geometria i natura",
+                question: "Quina figura geomètrica s'obté si dibuixem un quart de circumferència dins de cada quadrat de Fibonacci de manera contínua?",
+                options: [
+                    "Un cercle perfecte.",
+                    "L'espiral de Fibonacci.",
+                    "Un hexàgon regular."
+                ],
+                correct: 1,
+                explanation: "En unir els quarts de circumferència de cada quadrat de manera contínua es forma la famosa espiral de Fibonacci.",
+                visual: "spiral"
+            },
+            {
+                id: 12,
+                block: "Bloc 3: De la geometria a la natura",
+                shortBlock: "Bloc 3: Geometria i natura",
+                question: "Quin d'aquests elements de la natura NO apareix a la presentació com a exemple del patró de Fibonacci?",
+                options: [
+                    "La distribució de les llavors d'un gira-sol.",
+                    "Les escates d'una pinya i la closca d'un cargol (nàutil).",
+                    "Les ratlles d'una zebra."
+                ],
+                correct: 2,
+                explanation: "A la proposta hem investigat les pinyes, els gira-sols, la closca del cargol i les fulles de les plantes, però no les ratlles de les zebres.",
+                visual: null
+            },
+            {
+                id: 13,
+                block: "Bloc 3: De la geometria a la natura",
+                shortBlock: "Bloc 3: Geometria i natura",
+                question: "Per què les fulles d'una planta o les llavors d'un gira-sol creixen girant un angle concret respecte a l'anterior?",
+                options: [
+                    "Per ocupar l'espai de manera uniforme i aprofitar millor la llum sense tapar-se les unes a les altres.",
+                    "Perquè el vent les fa girar sempre cap al mateix costat.",
+                    "Per créixer més ràpidament cap amunt."
+                ],
+                correct: 0,
+                explanation: "Aquest gir permet que les fulles o llavors s'organitzin de manera uniforme sense amuntegar-se en les mateixes direccions, aprofitant al màxim l'espai i la llum del sol.",
+                visual: "goldenAngle"
+            },
+            {
+                id: 14,
+                block: "Bloc 3: De la geometria a la natura",
+                shortBlock: "Bloc 3: Geometria i natura",
+                question: "Com s'anomena l'angle aproximat de 137,5° amb què es distribueixen de manera òptima les fulles de moltes plantes?",
+                options: [
+                    "Angle recte.",
+                    "Angle d'or.",
+                    "Angle de Fibonacci."
+                ],
+                correct: 1,
+                explanation: "L'angle de 137,5° s'anomena angle d'or i aconsegueix repartir les fulles i llavors de la manera més uniforme possible.",
+                visual: "goldenAngle"
+            },
+            {
+                id: 15,
+                block: "Bloc 3: De la geometria a la natura",
+                shortBlock: "Bloc 3: Geometria i natura",
+                question: "Què passaria si una planta fes créixer cada fulla nova girant exactament 90° respecte a l'anterior?",
+                options: [
+                    "Les fulles es repartirien en totes direccions sense tocar-se mai.",
+                    "Cada 4 fulles es tornarien a posar exactament al mateix lloc, tapant-se entre elles.",
+                    "Formarien una espiral de Fibonacci perfecta."
+                ],
+                correct: 1,
+                explanation: "Com que una volta completa són 360°, si girem de 90° en 90° (90° × 4 = 360°), cada 4 fulles quedarien alineades una sobre l'altra tapant-se la llum!",
+                visual: "goldenAngle"
+            },
+
+            // BLOC 4
+            {
+                id: 16,
+                block: "Bloc 4: Les abelles i la programació del robot",
+                shortBlock: "Bloc 4: Abelles i robots",
+                question: "En el repte del rusc, quines dues normes ha de seguir l'abella per moure's?",
+                options: [
+                    "Pot saltar cel·les i pot anar cap enrere.",
+                    "Només pot passar a una cel·la que comparteixi costat i sempre ha d'avançar (no pot tornar enrere).",
+                    "Només es pot moure en línia recta."
+                ],
+                correct: 1,
+                explanation: "L'abella només pot desplaçar-se a una cel·la veïna que comparteixi costat i sempre avançant cap endavant.",
+                visual: "honeycomb"
+            },
+            {
+                id: 17,
+                block: "Bloc 4: Les abelles i la programació del robot",
+                shortBlock: "Bloc 4: Abelles i robots",
+                question: "Si per arribar a la cel·la A hi ha 1 camí, per a la B n'hi ha 2, per a la C n'hi ha 3 i per a la D n'hi ha 5, quants camins diferents hi ha per arribar a la cel·la E?",
+                options: [
+                    "6 camins.",
+                    "8 camins.",
+                    "10 camins."
+                ],
+                correct: 1,
+                explanation: "A la cel·la E només s'hi pot entrar des de C (3 camins) o des de D (5 camins). Per tant: 3 + 5 = 8 camins diferents!",
+                visual: "honeycomb"
+            },
+            {
+                id: 18,
+                block: "Bloc 4: Les abelles i la programació del robot",
+                shortBlock: "Bloc 4: Abelles i robots",
+                question: "Per què el nombre de camins per arribar a una cel·la del rusc coincideix amb la successió de Fibonacci?",
+                options: [
+                    "Perquè a cada cel·la només s'hi pot arribar des de les dues cel·les anteriors que hi toquen, i per tant se sumen els seus camins.",
+                    "Perquè les abelles saben comptar fins a 13.",
+                    "Perquè els hexàgons tenen 6 costats."
+                ],
+                correct: 0,
+                explanation: "Cada cel·la nova rep els camins de les dues cel·les anteriors adjacents, així que la quantitat de recorreguts és la suma dels dos nombres anteriors.",
+                visual: "honeycomb"
+            },
+            {
+                id: 19,
+                block: "Bloc 4: Les abelles i la programació del robot",
+                shortBlock: "Bloc 4: Abelles i robots",
+                question: "Quines dades bàsiques hem de planificar abans de programar el robot perquè reprodueixi un camí de l'abella?",
+                options: [
+                    "El color del robot i la velocitat de la música.",
+                    "La distància que ha d'avançar, quan ha de girar, cap a quina direcció i quants graus.",
+                    "Només el botó d'engegar i apagar."
+                ],
+                correct: 1,
+                explanation: "Perquè el robot segueixi el recorregut exacte pel rusc cal calcular la distància d'avanç i el moment, la direcció i els graus de cada gir.",
+                visual: null
+            },
+            {
+                id: 20,
+                block: "Bloc 4: Les abelles i la programació del robot",
+                shortBlock: "Bloc 4: Abelles i robots",
+                question: "Segons l'esquema de treball amb el robot, què hem de fer si el robot es desvia i no arriba a la cel·la E?",
+                options: [
+                    "Esborrar tot el programa i tornar a començar des de zero.",
+                    "Observar on s'ha desviat, ajustar la instrucció que ha fallat i tornar-ho a provar.",
+                    "Moure el taulell del rusc perquè coincideixi amb el robot."
+                ],
+                correct: 1,
+                explanation: "El cicle de treball en robòtica és: Programa -> Prova -> Observa -> Ajusta -> Torna-hi!",
+                visual: null
+            }
+        ];
+
+        // Esquemàtics SVG educatius per a les preguntes clau
+        const VISUAL_SVGS = {
+            pyramid: `
+                <svg class="w-full max-w-xs h-auto" viewBox="0 0 280 175" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Piràmide numèrica de 4 pisos">
+                    <!-- Pis 4 (cim) -->
+                    <rect x="115" y="10" width="50" height="35" rx="6" fill="#FDE68A" stroke="#D97706" stroke-width="2"/>
+                    <text x="140" y="33" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="16" fill="#1A3828">?</text>
+                    <!-- Pis 3 -->
+                    <rect x="90" y="48" width="50" height="35" rx="6" fill="#E0ECE4" stroke="#3B7A57" stroke-width="2"/>
+                    <rect x="140" y="48" width="50" height="35" rx="6" fill="#E0ECE4" stroke="#3B7A57" stroke-width="2"/>
+                    <!-- Pis 2 -->
+                    <rect x="65" y="86" width="50" height="35" rx="6" fill="#F2F7F4" stroke="#3B7A57" stroke-width="2"/>
+                    <rect x="115" y="86" width="50" height="35" rx="6" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+                    <rect x="165" y="86" width="50" height="35" rx="6" fill="#F2F7F4" stroke="#3B7A57" stroke-width="2"/>
+                    <!-- Pis 1 (base) -->
+                    <rect x="40" y="124" width="50" height="36" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+                    <text x="65" y="147" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="12" fill="#64748B">Extrem</text>
+                    <rect x="90" y="124" width="50" height="36" rx="6" fill="#FEF3C7" stroke="#D97706" stroke-width="2.5"/>
+                    <text x="115" y="147" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="12" fill="#B45309">Centre</text>
+                    <rect x="140" y="124" width="50" height="36" rx="6" fill="#FEF3C7" stroke="#D97706" stroke-width="2.5"/>
+                    <text x="165" y="147" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="12" fill="#B45309">Centre</text>
+                    <rect x="190" y="124" width="50" height="36" rx="6" fill="#FFFFFF" stroke="#64748B" stroke-width="2"/>
+                    <text x="215" y="147" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="12" fill="#64748B">Extrem</text>
+                </svg>
+                <span class="text-xs text-slate-500 mt-1 font-medium">Piràmide numèrica de 4 pisos</span>
+            `,
+            spiral: `
+                <svg class="w-full max-w-xs h-auto" viewBox="0 0 260 165" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Quadrats i espiral de Fibonacci">
+                    <!-- Escala: 1 unitat = 11px. Rectangle total 13x8 = 143x88 -->
+                    <g transform="translate(58, 12)">
+                        <!-- Quadrat 8 (88x88) a l'esquerra -->
+                        <rect x="0" y="0" width="88" height="88" fill="#FEE2E2" stroke="#3B7A57" stroke-width="1.5"/>
+                        <text x="44" y="49" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="16" fill="#1A3828">8</text>
+                        <!-- Quadrat 5 (55x55) dalt dreta -->
+                        <rect x="88" y="0" width="55" height="55" fill="#FEF3C7" stroke="#3B7A57" stroke-width="1.5"/>
+                        <text x="115.5" y="33" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="14" fill="#1A3828">5</text>
+                        <!-- Quadrat 3 (33x33) baix dreta -->
+                        <rect x="110" y="55" width="33" height="33" fill="#DCFCE7" stroke="#3B7A57" stroke-width="1.5"/>
+                        <text x="126.5" y="76" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="12" fill="#1A3828">3</text>
+                        <!-- Quadrat 2 (22x22) baix centre -->
+                        <rect x="88" y="66" width="22" height="22" fill="#DBEAFE" stroke="#3B7A57" stroke-width="1.5"/>
+                        <text x="99" y="81" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="11" fill="#1A3828">2</text>
+                        <!-- Dos quadrats d'1 (11x11) -->
+                        <rect x="88" y="55" width="11" height="11" fill="#F3E8FF" stroke="#3B7A57" stroke-width="1.5"/>
+                        <rect x="99" y="55" width="11" height="11" fill="#FCE7F3" stroke="#3B7A57" stroke-width="1.5"/>
+
+                        <!-- Espiral de Fibonacci -->
+                        <path d="M 99 66 A 11 11 0 0 1 88 55
+                                 A 11 11 0 0 1 99 55
+                                 M 99 66 A 11 11 0 0 0 110 55
+                                 A 11 11 0 0 0 99 55
+                                 A 11 11 0 0 0 88 66
+                                 A 22 22 0 0 0 110 88
+                                 A 33 33 0 0 0 143 55
+                                 A 55 55 0 0 0 88 0
+                                 A 88 88 0 0 0 0 88"
+                              stroke="#234B35" stroke-width="3" stroke-linecap="round"/>
+                    </g>
+                    <text x="130" y="122" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="11" fill="#3B7A57">Quadrats de costats: 1, 1, 2, 3, 5, 8...</text>
+                </svg>
+            `,
+            goldenAngle: `
+                <svg class="w-full max-w-xs h-auto" viewBox="0 0 260 155" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Angle de gir de les fulles 137,5 graus">
+                    <circle cx="130" cy="80" r="56" fill="#F2F7F4" stroke="#C2D9CB" stroke-width="2" stroke-dasharray="4 4"/>
+                    <!-- Fulla 1 (cap a dalt) -->
+                    <line x1="130" y1="80" x2="130" y2="24" stroke="#3B7A57" stroke-width="2.5"/>
+                    <ellipse cx="130" cy="36" rx="9" ry="16" fill="#3B7A57"/>
+                    <text x="130" y="16" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="12" fill="#1A3828">Fulla 1</text>
+
+                    <!-- Fulla 2 (girada 137,5 graus en sentit horari) -->
+                    <g transform="rotate(137.5 130 80)">
+                        <line x1="130" y1="80" x2="130" y2="24" stroke="#D97706" stroke-width="2.5"/>
+                        <ellipse cx="130" cy="36" rx="9" ry="16" fill="#F59E0B"/>
+                    </g>
+                    <text x="196" y="128" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="12" fill="#B45309">Fulla 2</text>
+
+                    <!-- Arc de l'angle 137,5° -->
+                    <path d="M 130 52 A 28 28 0 0 1 148.9 100.6" stroke="#D97706" stroke-width="2.5" fill="none"/>
+                    <circle cx="130" cy="80" r="4.5" fill="#1A3828"/>
+                    <text x="172" y="72" font-family="Fredoka, sans-serif" font-weight="700" font-size="13" fill="#B45309">137,5°</text>
+                </svg>
+                <span class="text-xs text-slate-500 mt-1 font-medium">Gir entre fulles consecutives</span>
+            `,
+            honeycomb: `
+                <svg class="w-full max-w-sm h-auto" viewBox="0 0 340 155" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Rusc hexagonal amb abella i cel·les A, B, C, D, E">
+                    <!-- Fila superior: Inici, B, D -->
+                    <!-- Inici -->
+                    <polygon points="55,15 88,34 88,72 55,91 22,72 22,34" fill="#FEF3C7" stroke="#D97706" stroke-width="2.5"/>
+                    <text x="55" y="59" text-anchor="middle" font-size="24">🐝</text>
+                    <text x="55" y="81" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="9" fill="#92400E">INICI</text>
+
+                    <!-- B -->
+                    <polygon points="121,15 154,34 154,72 121,91 88,72 88,34" fill="#FFFBEB" stroke="#F59E0B" stroke-width="2.5"/>
+                    <text x="121" y="60" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="20" fill="#78350F">B</text>
+
+                    <!-- D -->
+                    <polygon points="187,15 220,34 220,72 187,91 154,72 154,34" fill="#FFFBEB" stroke="#F59E0B" stroke-width="2.5"/>
+                    <text x="187" y="60" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="20" fill="#78350F">D</text>
+
+                    <!-- Fila inferior desplaçada: A, C, E -->
+                    <!-- A -->
+                    <polygon points="88,72 121,91 121,129 88,148 55,129 55,91" fill="#FFFBEB" stroke="#F59E0B" stroke-width="2.5"/>
+                    <text x="88" y="117" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="20" fill="#78350F">A</text>
+
+                    <!-- C -->
+                    <polygon points="154,72 187,91 187,129 154,148 121,129 121,91" fill="#FFFBEB" stroke="#F59E0B" stroke-width="2.5"/>
+                    <text x="154" y="117" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="20" fill="#78350F">C</text>
+
+                    <!-- E -->
+                    <polygon points="220,72 253,91 253,129 220,148 187,129 187,91" fill="#FDE68A" stroke="#D97706" stroke-width="2.5"/>
+                    <text x="220" y="117" text-anchor="middle" font-family="Fredoka, sans-serif" font-weight="700" font-size="20" fill="#78350F">E</text>
+
+                    <!-- Llegenda lateral -->
+                    <g transform="translate(268, 45)">
+                        <path d="M 0 15 L 45 15" stroke="#3B7A57" stroke-width="3" stroke-linecap="round"/>
+                        <path d="M 37 8 L 46 15 L 37 22" stroke="#3B7A57" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        <text x="23" y="36" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="10" fill="#2E6245">Sempre</text>
+                        <text x="23" y="48" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="10" fill="#2E6245">avançant</text>
+                    </g>
+                </svg>
+            `
+        };
+
+        // Estat de l'aplicació
+        let state = {
+            studentName: "",
+            currentIndex: 0,
+            score: 0,
+            answered: false,
+            userAnswers: [] // Guarda { questionIndex, selectedOption, isCorrect }
+        };
+
+        // Referències als elements del DOM
+        const screenStart = document.getElementById('screen-start');
+        const screenQuiz = document.getElementById('screen-quiz');
+        const screenResults = document.getElementById('screen-results');
+
+        const headerBadge = document.getElementById('header-badge');
+        const headerScore = document.getElementById('header-score');
+
+        const inputName = document.getElementById('student-name');
+        const btnStart = document.getElementById('btn-start');
+
+        const quizBlockBadge = document.getElementById('quiz-block-badge');
+        const quizProgressText = document.getElementById('quiz-progress-text');
+        const quizProgressBar = document.getElementById('quiz-progress-bar');
+        const questionNumberPill = document.getElementById('question-number-pill');
+        const questionText = document.getElementById('question-text');
+        const questionVisual = document.getElementById('question-visual');
+        const optionsContainer = document.getElementById('options-container');
+
+        const feedbackBox = document.getElementById('feedback-box');
+        const feedbackIcon = document.getElementById('feedback-icon');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackExplanation = document.getElementById('feedback-explanation');
+
+        const nextContainer = document.getElementById('next-container');
+        const btnNext = document.getElementById('btn-next');
+        const btnNextLabel = document.getElementById('btn-next-label');
+
+        const resultTrophy = document.getElementById('result-trophy');
+        const resultGreeting = document.getElementById('result-greeting');
+        const resultSubtitle = document.getElementById('result-subtitle');
+        const resultScore = document.getElementById('result-score');
+        const resultPercentage = document.getElementById('result-percentage');
+        const resultMessage = document.getElementById('result-message');
+        const blocksSummary = document.getElementById('blocks-summary');
+        const btnToggleReview = document.getElementById('btn-toggle-review');
+        const btnReviewText = document.getElementById('btn-review-text');
+        const btnRestart = document.getElementById('btn-restart');
+        const reviewSection = document.getElementById('review-section');
+        const reviewList = document.getElementById('review-list');
+
+        // Iniciar el qüestionari
+        function startQuiz() {
+            state = {
+                studentName: inputName.value.trim(),
+                currentIndex: 0,
+                score: 0,
+                answered: false,
+                userAnswers: []
+            };
+
+            headerScore.textContent = "0";
+            headerBadge.classList.remove('hidden');
+            headerBadge.classList.add('flex');
+
+            screenStart.classList.add('hidden');
+            screenResults.classList.add('hidden');
+            screenQuiz.classList.remove('hidden');
+
+            renderQuestion();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Mostrar la pregunta actual
+        function renderQuestion() {
+            const q = QUESTIONS[state.currentIndex];
+            state.answered = false;
+
+            // Actualitzar capçalera i barra de progrés
+            quizBlockBadge.textContent = q.block;
+            quizProgressText.textContent = `Pregunta ${state.currentIndex + 1} de ${QUESTIONS.length}`;
+            const progressPercent = ((state.currentIndex + 1) / QUESTIONS.length) * 100;
+            quizProgressBar.style.width = `${progressPercent}%`;
+
+            // Text de la pregunta
+            questionNumberPill.textContent = q.id;
+            questionText.textContent = q.question;
+
+            // Il·lustració SVG si n'hi ha
+            if (q.visual && VISUAL_SVGS[q.visual]) {
+                questionVisual.innerHTML = VISUAL_SVGS[q.visual];
+                questionVisual.classList.remove('hidden');
+            } else {
+                questionVisual.innerHTML = "";
+                questionVisual.classList.add('hidden');
+            }
+
+            // Ocultar feedback i botó següent
+            feedbackBox.classList.add('hidden');
+            nextContainer.classList.add('hidden');
+
+            // Generar opcions A, B, C
+            const letters = ['A', 'B', 'C'];
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((optionText, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'option-btn w-full text-left p-4 rounded-2xl border-2 border-slate-200 bg-white hover:border-bosc-500 hover:bg-bosc-50/40 flex items-center gap-3.5 cursor-pointer group';
+                btn.dataset.index = idx;
+
+                btn.innerHTML = `
+                    <span class="option-letter flex-shrink-0 w-9 h-9 rounded-xl bg-slate-100 group-hover:bg-bosc-500 group-hover:text-white text-slate-700 font-display font-bold flex items-center justify-center text-base transition">
+                        ${letters[idx]}
+                    </span>
+                    <span class="text-sm sm:text-base font-medium text-slate-800 leading-snug">
+                        ${optionText}
+                    </span>
+                `;
+
+                btn.addEventListener('click', () => handleAnswer(idx));
+                optionsContainer.appendChild(btn);
+            });
+
+            // Etiqueta del botó següent
+            if (state.currentIndex === QUESTIONS.length - 1) {
+                btnNextLabel.textContent = "Veure els resultats";
+            } else {
+                btnNextLabel.textContent = "Següent pregunta";
+            }
+        }
+
+        // Gestionar la selecció de resposta
+        function handleAnswer(selectedIndex) {
+            if (state.answered) return;
+            state.answered = true;
+
+            const q = QUESTIONS[state.currentIndex];
+            const isCorrect = selectedIndex === q.correct;
+
+            if (isCorrect) {
+                state.score++;
+                headerScore.textContent = state.score;
+            }
+
+            state.userAnswers.push({
+                questionIndex: state.currentIndex,
+                selectedOption: selectedIndex,
+                isCorrect: isCorrect
+            });
+
+            // Actualitzar estils dels botons d'opció
+            const buttons = optionsContainer.querySelectorAll('button');
+            buttons.forEach((btn, idx) => {
+                btn.disabled = true;
+                btn.classList.remove('cursor-pointer', 'hover:border-bosc-500', 'hover:bg-bosc-50/40');
+                const letterSpan = btn.querySelector('.option-letter');
+                letterSpan.classList.remove('group-hover:bg-bosc-500', 'group-hover:text-white');
+
+                if (idx === q.correct) {
+                    btn.classList.remove('border-slate-200', 'bg-white');
+                    btn.classList.add('border-emerald-500', 'bg-emerald-50/80');
+                    letterSpan.classList.remove('bg-slate-100', 'text-slate-700');
+                    letterSpan.classList.add('bg-emerald-500', 'text-white');
+                } else if (idx === selectedIndex && !isCorrect) {
+                    btn.classList.remove('border-slate-200', 'bg-white');
+                    btn.classList.add('border-rose-400', 'bg-rose-50/80');
+                    letterSpan.classList.remove('bg-slate-100', 'text-slate-700');
+                    letterSpan.classList.add('bg-rose-500', 'text-white');
+                } else {
+                    btn.classList.add('opacity-60');
+                }
+            });
+
+            // Configurar i mostrar caixa de retroacció
+            feedbackBox.classList.remove('hidden', 'border-emerald-300', 'bg-emerald-50', 'text-emerald-900', 'border-amber-300', 'bg-amber-50', 'text-amber-950');
+            feedbackIcon.classList.remove('bg-emerald-500', 'text-white', 'bg-amber-400', 'text-amber-950');
+
+            if (isCorrect) {
+                feedbackBox.classList.add('border-emerald-300', 'bg-emerald-50', 'text-emerald-900');
+                feedbackIcon.classList.add('bg-emerald-500', 'text-white');
+                feedbackIcon.textContent = "✓";
+                feedbackTitle.textContent = "Molt ben fet! Resposta correcta";
+            } else {
+                feedbackBox.classList.add('border-amber-300', 'bg-amber-50', 'text-amber-950');
+                feedbackIcon.classList.add('bg-amber-400', 'text-amber-950');
+                feedbackIcon.textContent = "!";
+                feedbackTitle.textContent = "Gairebé! Fixa't en la pista:";
+            }
+
+            feedbackExplanation.textContent = q.explanation;
+
+            // Mostrar botó per avançar
+            nextContainer.classList.remove('hidden');
+        }
+
+        // Passar a la següent pregunta o pantalla de resultats
+        function handleNext() {
+            if (state.currentIndex < QUESTIONS.length - 1) {
+                state.currentIndex++;
+                renderQuestion();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                showResults();
+            }
+        }
+
+        // Mostrar la pantalla final de resultats
+        function showResults() {
+            screenQuiz.classList.add('hidden');
+            screenResults.classList.remove('hidden');
+            reviewSection.classList.add('hidden');
+            btnReviewText.textContent = "Revisa totes les respostes";
+
+            const total = QUESTIONS.length;
+            const percentage = Math.round((state.score / total) * 100);
+
+            // Personalització amb el nom
+            if (state.studentName) {
+                resultGreeting.textContent = `Enhorabona, ${state.studentName}!`;
+            } else {
+                resultGreeting.textContent = "Has completat el repte!";
+            }
+
+            resultScore.textContent = `${state.score} / ${total}`;
+            resultPercentage.textContent = `${percentage}%`;
+
+            // Missatge i icona segons la puntuació
+            if (state.score >= 18) {
+                resultTrophy.textContent = "🌟";
+                resultMessage.textContent = "Impressionant! Ets un autèntic expert o experta en la successió de Fibonacci. Has sabut connectar les matemàtiques amb les plantes, l'espiral i el camí de les abelles a la perfecció!";
+            } else if (state.score >= 14) {
+                resultTrophy.textContent = "🏆";
+                resultMessage.textContent = "Molt bona feina! Domines molt bé les regularitats de Fibonacci, l'espiral geomètrica i la lògica del rusc. Revisa les preguntes que has fallat per acabar-ho de polir!";
+            } else if (state.score >= 10) {
+                resultTrophy.textContent = "🌻";
+                resultMessage.textContent = "Bon treball! Has superat el repte i ja coneixes els secrets principals de Fibonacci a la natura. Pots revisar les explicacions i tornar-ho a intentar per superar la teva marca!";
+            } else {
+                resultTrophy.textContent = "🐝";
+                resultMessage.textContent = "Bon intent! El món de Fibonacci té molts detalls curiosos. Fes un cop d'ull a la revisió de les respostes per entendre cada pista i torna-hi quan vulguis!";
+            }
+
+            // Resum per cada un dels 4 blocs
+            const blocks = [
+                { name: "Bloc 1: Successions numèriques", icon: "🔢", start: 0, end: 4 },
+                { name: "Bloc 2: Regularitats i prediccions", icon: "✨", start: 5, end: 8 },
+                { name: "Bloc 3: Geometria i natura", icon: "🐚", start: 9, end: 14 },
+                { name: "Bloc 4: Abelles i robots", icon: "🐝", start: 15, end: 19 }
+            ];
+
+            blocksSummary.innerHTML = '';
+            blocks.forEach(b => {
+                let blockCorrect = 0;
+                const blockTotal = (b.end - b.start) + 1;
+
+                for (let i = b.start; i <= b.end; i++) {
+                    if (state.userAnswers[i] && state.userAnswers[i].isCorrect) {
+                        blockCorrect++;
+                    }
+                }
+
+                const blockPct = Math.round((blockCorrect / blockTotal) * 100);
+                const barColor = blockPct >= 80 ? 'bg-emerald-500' : (blockPct >= 50 ? 'bg-mel-500' : 'bg-rose-400');
+
+                const card = document.createElement('div');
+                card.className = 'p-4 rounded-2xl bg-crema border border-bosc-100 flex flex-col justify-between gap-2';
+                card.innerHTML = `
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="font-semibold text-sm text-bosc-800 flex items-center gap-1.5">
+                            <span>${b.icon}</span>
+                            <span>${b.name}</span>
+                        </span>
+                        <span class="font-display font-bold text-sm px-2.5 py-0.5 rounded-lg bg-white border border-slate-200 text-slate-700">
+                            ${blockCorrect}/${blockTotal}
+                        </span>
+                    </div>
+                    <div class="w-full h-2.5 bg-slate-200/70 rounded-full overflow-hidden">
+                        <div class="h-full ${barColor} rounded-full transition-all duration-700" style="width: ${blockPct}%"></div>
+                    </div>
+                `;
+                blocksSummary.appendChild(card);
+            });
+
+            // Preparar llista de revisió
+            renderReviewList();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Generar la llista detallada de revisió
+        function renderReviewList() {
+            const letters = ['A', 'B', 'C'];
+            reviewList.innerHTML = '';
+
+            QUESTIONS.forEach((q, idx) => {
+                const ans = state.userAnswers[idx];
+                const isCorrect = ans ? ans.isCorrect : false;
+                const selectedIdx = ans ? ans.selectedOption : -1;
+
+                const item = document.createElement('div');
+                item.className = `bg-white rounded-2xl p-5 border-2 shadow-sm ${isCorrect ? 'border-emerald-200' : 'border-rose-200'}`;
+
+                let optionsHtml = '';
+                q.options.forEach((opt, optIdx) => {
+                    let badgeClass = 'bg-slate-100 text-slate-600';
+                    let rowClass = 'bg-slate-50/60 border-slate-200/70 text-slate-700';
+                    let statusTag = '';
+
+                    if (optIdx === q.correct) {
+                        badgeClass = 'bg-emerald-500 text-white';
+                        rowClass = 'bg-emerald-50 border-emerald-300 text-emerald-950 font-medium';
+                        statusTag = '<span class="ml-auto text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">Correcta</span>';
+                    } else if (optIdx === selectedIdx && !isCorrect) {
+                        badgeClass = 'bg-rose-500 text-white';
+                        rowClass = 'bg-rose-50 border-rose-300 text-rose-950';
+                        statusTag = '<span class="ml-auto text-xs font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded-md">La teva resposta</span>';
+                    }
+
+                    optionsHtml += `
+                        <div class="flex items-center gap-2.5 p-2.5 rounded-xl border text-xs sm:text-sm ${rowClass}">
+                            <span class="w-6 h-6 rounded-lg flex items-center justify-center font-bold flex-shrink-0 ${badgeClass}">${letters[optIdx]}</span>
+                            <span>${opt}</span>
+                            ${statusTag}
+                        </div>
+                    `;
+                });
+
+                item.innerHTML = `
+                    <div class="flex items-start justify-between gap-3 mb-3">
+                        <div class="flex items-start gap-2.5">
+                            <span class="flex-shrink-0 w-7 h-7 rounded-lg font-display font-bold text-sm flex items-center justify-center ${isCorrect ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                                ${q.id}
+                            </span>
+                            <div>
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">${q.shortBlock}</span>
+                                <h4 class="font-bold text-sm sm:text-base text-slate-800">${q.question}</h4>
+                            </div>
+                        </div>
+                        <span class="flex-shrink-0 text-lg">${isCorrect ? '✅' : '❌'}</span>
+                    </div>
+                    <div class="space-y-1.5 mb-3">
+                        ${optionsHtml}
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-600 bg-crema p-3 rounded-xl border border-bosc-100">
+                        <strong class="text-bosc-700">Explicació:</strong> ${q.explanation}
+                    </p>
+                `;
+
+                reviewList.appendChild(item);
+            });
+        }
+
+        // Esdeveniments
+        btnStart.addEventListener('click', startQuiz);
+        inputName.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') startQuiz();
+        });
+        btnNext.addEventListener('click', handleNext);
+        btnRestart.addEventListener('click', () => {
+            screenResults.classList.add('hidden');
+            headerBadge.classList.add('hidden');
+            headerBadge.classList.remove('flex');
+            screenStart.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        btnToggleReview.addEventListener('click', () => {
+            const isHidden = reviewSection.classList.contains('hidden');
+            if (isHidden) {
+                reviewSection.classList.remove('hidden');
+                btnReviewText.textContent = "Amaga la revisió";
+                reviewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                reviewSection.classList.add('hidden');
+                btnReviewText.textContent = "Revisa totes les respostes";
+            }
+        });
+    </script>
+</body>
+</html>
